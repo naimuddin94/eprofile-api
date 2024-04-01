@@ -14,6 +14,7 @@ const cookieParser = require('cookie-parser');
 const globalErrorHandler = require('./lib/globalErrorHandler');
 const userRouter = require('./routes/userRoute');
 const authRouter = require('./routes/authRoute');
+const profileRouter = require('./routes/profileRoute');
 
 const app = express();
 
@@ -21,7 +22,7 @@ const app = express();
 app.use(express.json());
 app.use(
     cors({
-        origin: ['http://localhost:5173'],
+        origin: ['http://localhost:5173', 'http://localhost:3000'],
         credentials: true,
     })
 );
@@ -30,6 +31,7 @@ app.use(cookieParser());
 // routes
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/profile', profileRouter);
 
 // testing route
 app.get('/', (req, res) => {
