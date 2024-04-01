@@ -33,7 +33,7 @@ app.use('/api/v1/auth', authRouter);
 
 // testing route
 app.get('/', (req, res) => {
-    res.send('Yunus trail admin api is running....');
+    res.send('Server is running....');
 });
 
 // handling all route which is not found
