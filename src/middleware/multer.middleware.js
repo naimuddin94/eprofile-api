@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const multer = require('multer');
 
 const storage = multer.diskStorage({
@@ -6,7 +7,7 @@ const storage = multer.diskStorage({
     },
     filename(req, file, cb) {
         // const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-        // cb(null, `${file.fieldname}-${uniqueSuffix}`);
+        // cb(null, `${uniqueSuffix}-${file.originalname}`);
         cb(null, file.originalname);
     },
 });
