@@ -168,7 +168,7 @@ const profileSchema = new mongoose.Schema(
         },
         contactInformation: {
             type: contactSchema,
-            required: true,
+            // required: true,
         },
         education: {
             type: [educationSchema],
