@@ -1,41 +1,43 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable max-len */
+const path = require('path');
 const Profile = require('../models/profile.model');
-const { uploadOnCloudinary } = require('../utils/cloudinary');
+const { fileUploadOnCloudinary } = require('../utils/uploadFileCloudinary');
 
 const createProfile = async (req, res) => {
     try {
-    const {
-            fullName,
-            title,
-            objective,
-            contactInformation,
-            education,
-            experience,
-            skills,
-            professionalMemberships,
-            language,
-            volunteerWork,
-            project,
-            publications,
-            testimonials,
-            hobbies,
-            careerGoals,
-            createdBy,
-    } = req.body;
+        const {
+                fullName,
+                title,
+                objective,
+                contactInformation,
+                education,
+                experience,
+                skills,
+                professionalMemberships,
+                language,
+                volunteerWork,
+                project,
+                publications,
+                testimonials,
+                hobbies,
+                careerGoals,
+                createdBy,
+        } = req.body;
 
-        console.log(27, req.files);
+        console.log('from 28');
         let photoUrl;
         let coverUrl;
 
         if (req.files && Array.isArray(req.files.photo) && req.files.photo.length > 0) {
-            photoUrl = await uploadOnCloudinary(req.files.photo[0].path);
+            photoUrl = await fileUploadOnCloudinary(req?.files?.photo[0]?.buffer);
         }
         if (req.files && Array.isArray(req.files.coverPhoto) && req.files.coverPhoto.length > 0) {
-            coverUrl = await uploadOnCloudinary(req.files.coverPhoto[0].path);
+            coverUrl = await fileUploadOnCloudinary(req?.files?.coverPhoto[0]?.buffer);
         }
+        console.log('from 31');
 
-        console.log({ photoUrl, coverUrl });
+        console.log(38, { photoUrl, coverUrl });
 
         const result = await Profile.create({
             fullName,

@@ -3,23 +3,30 @@ require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const fileUploadOnCloudinary = async (file) => {
-    try {
-        console.log(13, file);
-        const result = await cloudinary.uploader.upload(file, {
-            // Optional parameters, such as folder, tags, etc.
-        });
-        console.log(result);
-        return result.url;
-    } catch (error) {
-        console.error('Error uploading file to Cloudinary:', error);
-        return null;
-    }
+const fileUploadOnCloudinary = async (fileBuffer) => {
+  try {
+    // Use a Promise to handle the upload process
+    return new Promise((resolve, reject) => {
+      // Upload the file buffer to Cloudinary
+      cloudinary.uploader
+        .upload_stream({ resource_type: 'auto' }, (error, result) => {
+          if (error) {
+            reject(error); // Reject the Promise if there's an error
+          } else {
+            resolve(result.url); // Resolve the Promise with the URL if successful
+          }
+        })
+        .end(fileBuffer);
+    });
+  } catch (error) {
+    console.error('Error uploading file to Cloudinary:', error);
+    return null;
+  }
 };
 
 module.exports = { fileUploadOnCloudinary };

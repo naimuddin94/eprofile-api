@@ -1,10 +1,13 @@
 /* eslint-disable prettier/prettier */
 const express = require('express');
+const multer = require('multer');
 const { createProfile } = require('../controller/profile.controller');
 const { getAllDataFn, deleteFn } = require('../controller/shared');
 const Profile = require('../models/profile.model');
 const { getDataByOwnerIdFn, updateByOwnerIdFn } = require('../controller/ownerShip');
-const { upload } = require('../middleware/multer.middleware');
+// const { upload } = require('../middleware/multer.middleware');
+
+const upload = multer();
 
 const profileRouter = express.Router();
 
