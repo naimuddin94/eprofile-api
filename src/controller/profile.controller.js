@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable max-len */
 const Profile = require('../models/profile.model');
-const { uploadOnCloudinary } = require('../utils/cloudinary');
 
 const createProfile = async (req, res) => {
     try {
@@ -22,22 +23,21 @@ const createProfile = async (req, res) => {
             createdBy,
         } = req.body;
 
-        let photoLocalPath;
-        let coverPhotoLocalPath;
+        console.log('from 26', req.files);
+        let photoUrl;
+        let coverUrl;
+
         if (req.files && Array.isArray(req.files.photo) && req.files.photo.length > 0) {
-            photoLocalPath = req.files.photo[0].path;
+            photoUrl = `${req.protocol}://${req.get('host')}/public/${req.files?.photo[0]?.filename}`;
         }
         if (req.files && Array.isArray(req.files.coverPhoto) && req.files.coverPhoto.length > 0) {
-            coverPhotoLocalPath = req.files.coverPhoto[0].path;
+            coverUrl = `${req.protocol}://${req.get('host')}/public/${req.files?.coverPhoto[0]?.filename}`;
         }
-
-        const photo = await uploadOnCloudinary(photoLocalPath);
-        const coverPhoto = await uploadOnCloudinary(coverPhotoLocalPath);
 
         const result = await Profile.create({
             fullName,
-            photo,
-            coverPhoto,
+            photo: photoUrl,
+            coverPhoto: coverUrl,
             title,
             objective,
             contactInformation,

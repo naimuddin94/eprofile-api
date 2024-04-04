@@ -27,6 +27,7 @@ app.use(
     })
 );
 app.use(cookieParser());
+app.use('/public', express.static('public'));
 
 // routes
 app.use('/api/v1/users', userRouter);

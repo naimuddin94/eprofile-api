@@ -12,16 +12,7 @@ profileRouter.get('/', getAllDataFn(Profile));
 profileRouter.get('/:id', getDataByOwnerIdFn(Profile));
 profileRouter.post(
     '/',
-    upload.fields([
-        {
-            name: 'photo',
-            maxCount: 1,
-        },
-        {
-            name: 'coverPhoto',
-            maxCount: 1,
-        },
-    ]),
+    upload.fields([{ name: 'photo', maxCount: 1 }, { name: 'coverPhoto', maxCount: 1 }]),
     createProfile,
 );
 profileRouter.put('/:id', updateByOwnerIdFn(Profile));
