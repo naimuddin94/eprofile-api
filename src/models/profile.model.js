@@ -2,8 +2,6 @@
 const mongoose = require('mongoose');
 const contactSchema = require('./contact.model');
 
-const { validateImageExtension } = require('../utils');
-
 // occupationSchema for title
 const occupationSchema = new mongoose.Schema({
     name: {
@@ -100,11 +98,9 @@ const profileSchema = new mongoose.Schema(
         photo: {
             type: String,
             required: true,
-            validate: [validateImageExtension, 'Invalid image url'],
         },
         coverPhoto: {
             type: String,
-            validate: [validateImageExtension, 'Invalid cover image url'],
         },
         title: {
             type: [occupationSchema],

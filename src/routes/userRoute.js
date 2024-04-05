@@ -6,7 +6,7 @@ const {
     updateFn,
     deleteFn,
     getUserRoleFn,
-} = require('../controller/shared');
+} = require('../controller/shared.controller');
 const User = require('../models/user.model');
 
 const userRouter = express.Router();

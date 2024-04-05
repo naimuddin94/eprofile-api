@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 const { asyncHandler, ApiResponse, ApiError } = require('../utils');
+const { fileUploadOnCloudinary } = require('../utils/uploadFileCloudinary');
 
 // get all data from the database collection
 const getAllDataFn = (dbCollectionName) => asyncHandler(async (req, res) => {
@@ -30,9 +31,31 @@ const getSingleDataFn = (dbCollectionName) => asyncHandler(async (req, res) => {
 
 // save new data to database
 const createFn = (dbCollectionName) => asyncHandler(async (req, res) => {
-    await dbCollectionName.create(req.body);
-    return res.json(new ApiResponse(200, 'Save Successfully'));
-});
+    let result;
+    if (req.files) {
+        let photoUrl;
+        let coverUrl;
+
+        if (req.files && Array.isArray(req.files.photo) && req.files.photo.length > 0) {
+            photoUrl = await fileUploadOnCloudinary(req?.files?.photo[0]?.buffer);
+        }
+        if (req.files && Array.isArray(req.files.coverPhoto) && req.files.coverPhoto.length > 0) {
+            coverUrl = await fileUploadOnCloudinary(req?.files?.coverPhoto[0]?.buffer);
+        }
+
+        result = await dbCollectionName.create({
+            photo: photoUrl,
+            coverPhoto: coverUrl,
+            ...req.body,
+        });
+    } else {
+        result = await dbCollectionName.create(req.body);
+    }
+
+        return res
+            .status(201)
+            .json(new ApiResponse(200, result, 'Saved successfully'));
+    });
 
 // update function
 const updateFn = (dbCollectionName) => asyncHandler(async (req, res) => {
