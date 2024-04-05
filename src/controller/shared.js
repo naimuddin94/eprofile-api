@@ -1,104 +1,91 @@
-/* eslint-disable consistent-return */
+/* eslint-disable prettier/prettier */
+const { asyncHandler, ApiResponse, ApiError } = require('../utils');
 
 // get all data from the database collection
-const getAllDataFn = (dbCollectionName) => async (req, res) => {
-    try {
-        const result = await dbCollectionName.find();
-        res.send(result);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+const getAllDataFn = (dbCollectionName) => asyncHandler(async (req, res) => {
+    const result = await dbCollectionName.find();
+
+    if (!result) {
+        throw new ApiError(404, 'Something went wrong retrieving data from the database');
     }
-};
+
+    return res.json(new ApiResponse(200, result));
+    });
 
 // get single data by id from the database collection
-const getSingleDataFn = (dbCollectionName) => async (req, res) => {
-    try {
+const getSingleDataFn = (dbCollectionName) => asyncHandler(async (req, res) => {
         const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({ message: 'Id is required' });
+            throw new ApiError(400, 'Id is required');
         }
+
         const result = await dbCollectionName.findById(id);
 
         if (!result) {
-            return res.status(404).json({ message: 'Not found' });
+            throw new ApiError(404, 'Something went wrong retrieving data from the database');
         }
-        res.json(result);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
+        return res.json(new ApiResponse(200, result));
+});
 
 // save new data to database
-const createFn = (dbCollectionName) => async (req, res) => {
-    try {
-        await dbCollectionName.create(req.body);
-        res.status(201).json({ message: 'Saved successfully' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
+const createFn = (dbCollectionName) => asyncHandler(async (req, res) => {
+    await dbCollectionName.create(req.body);
+    return res.json(new ApiResponse(200, 'Save Successfully'));
+});
 
 // update function
-const updateFn = (dbCollectionName) => async (req, res) => {
-    try {
-        const { id } = req.params;
+const updateFn = (dbCollectionName) => asyncHandler(async (req, res) => {
+    const { id } = req.params;
 
-        // Exclude password field from req.body
-        if (req?.body?.password) {
-            delete req.body.password;
-        }
-
-        const result = await dbCollectionName.findByIdAndUpdate(id, req.body, {
-            new: true,
-        });
-
-        if (!result) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        res.json({ message: 'Updated successfully' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    if (!id) {
+        throw new ApiError(400, 'Id required');
     }
-};
+
+    // Exclude password field from req.body
+    if (req?.body?.password) {
+        delete req.body.password;
+    }
+
+    const result = await dbCollectionName.findByIdAndUpdate(id, req.body, {
+        new: true,
+    });
+
+    if (!result) {
+       throw new ApiError(404, 'Something went wrong retrieving data from the database');
+    }
+
+    return res.json(new ApiResponse(200, 'Updated successfully'));
+});
 
 // delete function
-const deleteFn = (dbCollectionName) => async (req, res) => {
-    try {
-        const { id } = req.params;
-        if (!id) {
-            return res.status(400).json({ message: 'ID is required' });
-        }
-
-        const result = await dbCollectionName.findByIdAndDelete(id);
-        if (!result) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        res.json({ message: 'Deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+const deleteFn = (dbCollectionName) => asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        throw new ApiError(400, 'Id required');
     }
-};
+
+    const result = await dbCollectionName.findByIdAndDelete(id);
+
+    if (!result) {
+        throw new ApiError(404, 'Something went wrong retrieving data from the database');
+    }
+
+    return res.json(new ApiResponse(200, 'Deleted successfully'));
+});
 
 // get user role
-const getUserRoleFn = (dbCollectionName) => async (req, res) => {
-    try {
-        const { email } = req.params;
-        const user = await dbCollectionName.findOne({ email });
+const getUserRoleFn = (dbCollectionName) => asyncHandler(async (req, res) => {
+    const { email } = req.params;
+    const user = await dbCollectionName.findOne({ email });
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        const { role } = user;
-        const { name } = user;
-        res.send({ role, name });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    if (!user) {
+        throw new ApiError(404, 'User not found');
     }
-};
+
+    const { role } = user;
+    return res.json(new ApiResponse(200, role));
+});
 
 module.exports = {
     getAllDataFn,
