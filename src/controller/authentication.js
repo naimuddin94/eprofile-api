@@ -1,31 +1,28 @@
-/* eslint-disable consistent-return */
+/* eslint-disable prettier/prettier */
 const bcrypt = require('bcrypt');
 const User = require('../models/user.model');
 const { createAuthCookie, clearUserCookie } = require('../lib/tokenHandler');
+const { asyncHandler, ApiError } = require('../utils');
 
 // user login function
-const userLoginFn = () => async (req, res, next) => {
-    try {
+const userLoginFn = () => asyncHandler(async (req, res, next) => {
         const { email, password } = req.body;
 
         // Find the user by username or email
         const user = await User.findOne({ email });
 
         if (!user) {
-            // User not found
-            return res.status(401).json({ message: 'Invalid email or password' });
+            throw new ApiError(401, 'User not found');
         }
 
         // Compare passwords
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
         if (!isPasswordMatch) {
-            // Passwords don't match
-            return res.status(401).json({ message: 'Invalid password' });
+            throw new ApiError(401, 'Invalid credentials!');
         }
 
         const userResponse = {
-            // eslint-disable-next-line no-underscore-dangle
             id: user._id,
             name: user.name,
             email: user.email,
@@ -34,21 +31,10 @@ const userLoginFn = () => async (req, res, next) => {
         };
 
         // Create authentication cookie
-        createAuthCookie(req, res, next, userResponse);
-    } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-};
+        return createAuthCookie(req, res, next, userResponse);
+    });
 
 // user logout function
-const userLogoutFn = () => async (req, res) => {
-    console.log(req.body);
-    try {
-        clearUserCookie(req, res);
-    } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
-    }
-};
+const userLogoutFn = () => asyncHandler(async (req, res) => clearUserCookie(req, res));
 
 module.exports = { userLoginFn, userLogoutFn };

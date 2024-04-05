@@ -1,7 +1,7 @@
 /* eslint-disable comma-dangle */
 const mongoose = require('mongoose');
 
-const { validateImageExtension } = require('../utils/utils');
+const { validateImageExtension } = require('../utils');
 
 // occupationSchema for title
 const occupationSchema = new mongoose.Schema({

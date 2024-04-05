@@ -4,7 +4,7 @@ const multer = require('multer');
 const { createProfile } = require('../controller/profile.controller');
 const { getAllDataFn, deleteFn } = require('../controller/shared');
 const Profile = require('../models/profile.model');
-const { getDataByOwnerIdFn, updateByOwnerIdFn } = require('../controller/ownerShip');
+const { getDataByOwnerIdFn, updateByOwnerIdFn } = require('../controller/ownerShared.controller');
 // const { upload } = require('../middleware/multer.middleware');
 
 const upload = multer();

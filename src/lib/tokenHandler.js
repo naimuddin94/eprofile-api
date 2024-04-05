@@ -1,8 +1,9 @@
 const createToken = require('./createToken');
 require('dotenv').config();
+const { ApiResponse } = require('../utils');
 
 // create auth cookie function
-const createAuthCookie = (req, res, next, userResponse) => {
+const createAuthCookie = async (req, res, next, userResponse) => {
     try {
         const token = createToken({
             email: userResponse.email,
@@ -14,7 +15,7 @@ const createAuthCookie = (req, res, next, userResponse) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-        }).send({ message: 'Login successfully', user: userResponse });
+        }).json(new ApiResponse(200, userResponse, 'Login success'));
     } catch (err) {
         next(err);
     }
@@ -26,7 +27,7 @@ const clearUserCookie = (req, res) => {
         maxAge: 0,
         secure: process.env.NODE_ENV === 'production',
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-    }).send({ message: 'cleared' });
+    }).json({ message: 'Logout successfully' });
 };
 
 module.exports = { createAuthCookie, clearUserCookie };
