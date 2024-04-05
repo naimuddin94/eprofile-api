@@ -1,5 +1,6 @@
 /* eslint-disable comma-dangle */
 const mongoose = require('mongoose');
+const contactSchema = require('./contact.model');
 
 const { validateImageExtension } = require('../utils');
 
@@ -21,61 +22,6 @@ const occupationSchema = new mongoose.Schema({
         type: Date,
     },
     responsibilities: {
-        type: String,
-    },
-});
-
-// contactSchema for contact information
-const contactSchema = new mongoose.Schema({
-    street: {
-        type: String,
-        required: true,
-    },
-    house: {
-        type: String,
-        required: true,
-    },
-    city: {
-        type: String,
-        required: true,
-    },
-    state: {
-        type: String,
-        required: true,
-    },
-    postalCode: {
-        type: String,
-        required: true,
-    },
-    country: {
-        type: String,
-        required: true,
-    },
-    mobileNumber: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    website: {
-        type: String,
-        required: true,
-    },
-    linkedin: {
-        type: String,
-    },
-    facebook: {
-        type: String,
-    },
-    twitter: {
-        type: String,
-    },
-    instagram: {
-        type: String,
-    },
-    youtube: {
         type: String,
     },
 });
@@ -221,7 +167,7 @@ const profileSchema = new mongoose.Schema(
 );
 
 // Define unique indexes
-profileSchema.index({ owner: 1 }, { unique: true });
+profileSchema.index({ createdBy: 1 }, { unique: true });
 
 const Profile = mongoose.model('Profile', profileSchema);
 
