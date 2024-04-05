@@ -4,7 +4,6 @@ const multer = require('multer');
 const { getAllDataFn, deleteFn, createFn } = require('../controller/shared.controller');
 const Profile = require('../models/profile.model');
 const { getDataByOwnerIdFn, updateByOwnerIdFn } = require('../controller/ownerShared.controller');
-// const { upload } = require('../middleware/multer.middleware');
 
 const upload = multer();
 

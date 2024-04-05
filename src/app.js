@@ -12,9 +12,10 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const globalErrorHandler = require('./lib/globalErrorHandler');
-const userRouter = require('./routes/userRoute');
-const authRouter = require('./routes/authRoute');
-const profileRouter = require('./routes/profileRoute');
+const userRouter = require('./routes/user.routes');
+const authRouter = require('./routes/auth.routes');
+const profileRouter = require('./routes/profile.routes');
+const companyRouter = require('./routes/company.routes');
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(cookieParser());
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/profile', profileRouter);
+app.use('/api/v1/companies', companyRouter);
 
 // testing route
 app.get('/', (req, res) => {
