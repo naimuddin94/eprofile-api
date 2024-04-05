@@ -4,25 +4,6 @@ const { ApiResponse, asyncHandler } = require('../utils');
 
 // create a new profile
 const createProfile = asyncHandler(async (req, res) => {
-    const {
-        fullName,
-        title,
-        objective,
-        contactInformation,
-        education,
-        experience,
-        skills,
-        professionalMemberships,
-        language,
-        volunteerWork,
-        project,
-        publications,
-        testimonials,
-        hobbies,
-        careerGoals,
-        createdBy,
-    } = req.body;
-
     let photoUrl;
     let coverUrl;
 
@@ -34,24 +15,9 @@ const createProfile = asyncHandler(async (req, res) => {
     }
 
     const result = await Profile.create({
-        fullName,
         photo: photoUrl,
         coverPhoto: coverUrl,
-        title,
-        objective,
-        contactInformation,
-        education,
-        experience,
-        skills,
-        professionalMemberships,
-        language,
-        volunteerWork,
-        project,
-        publications,
-        testimonials,
-        hobbies,
-        careerGoals,
-        createdBy,
+        ...req.body,
     });
 
     return res.status(201).json(new ApiResponse(200, result, 'Profile registered Successfully'));
