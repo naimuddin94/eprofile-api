@@ -4,7 +4,7 @@ const { userLoginFn, userLogoutFn } = require('../controller/authentication');
 
 const authRouter = express.Router();
 
-authRouter.post('/login', userLoginFn());
-authRouter.post('/logout', userLogoutFn());
+authRouter.route('/login').post(userLoginFn());
+authRouter.route('/logout').post(userLogoutFn());
 
 module.exports = authRouter;

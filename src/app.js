@@ -16,6 +16,7 @@ const userRouter = require('./routes/user.routes');
 const authRouter = require('./routes/auth.routes');
 const profileRouter = require('./routes/profile.routes');
 const companyRouter = require('./routes/company.routes');
+const adminRouter = require('./routes/admin.routes');
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/profile', profileRouter);
 app.use('/api/v1/companies', companyRouter);
+app.use('/api/v1/admin', adminRouter);
 
 // testing route
 app.get('/', (req, res) => {
