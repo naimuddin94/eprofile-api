@@ -3,91 +3,109 @@ const mongoose = require('mongoose');
 const contactSchema = require('./contact.model');
 
 // occupationSchema for title
-const occupationSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
+const occupationSchema = new mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: true,
+        },
+        designation: {
+            type: String,
+            required: true,
+        },
+        startDate: {
+            type: Date,
+            required: true,
+        },
+        endDate: {
+            type: Date,
+        },
+        responsibilities: {
+            type: String,
+        },
     },
-    designation: {
-        type: String,
-        required: true,
-    },
-    startDate: {
-        type: Date,
-        required: true,
-    },
-    endDate: {
-        type: Date,
-    },
-    responsibilities: {
-        type: String,
-    },
-});
+    { _id: false }
+);
 
 // education schema for education
-const educationSchema = new mongoose.Schema({
-    instituteName: {
-        type: String,
-        required: true,
+const educationSchema = new mongoose.Schema(
+    {
+        instituteName: {
+            type: String,
+            required: true,
+        },
+        passingYear: {
+            type: String,
+            required: true,
+        },
+        cgpa: {
+            type: String,
+        },
+        duration: {
+            type: String,
+            required: true,
+        },
     },
-    passingYear: {
-        type: String,
-        required: true,
-    },
-    cgpa: {
-        type: String,
-    },
-    duration: {
-        type: String,
-        required: true,
-    },
-});
+    { _id: false }
+);
 
 // experience schema
-const experienceSchema = new mongoose.Schema({
-    company: {
-        type: String,
-        required: true,
+const experienceSchema = new mongoose.Schema(
+    {
+        company: {
+            type: String,
+            required: true,
+        },
+        jobTitle: {
+            type: String,
+            required: true,
+        },
+        dateOfEmployment: {
+            type: String,
+            required: true,
+        },
+        responsibilities: {
+            type: String,
+        },
     },
-    jobTitle: {
-        type: String,
-        required: true,
-    },
-    dateOfEmployment: {
-        type: String,
-        required: true,
-    },
-    responsibilities: {
-        type: String,
-    },
-});
+    { _id: false }
+);
 
 // skills schema for skills fields
-const skillsSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
+const skillsSchema = new mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: true,
+        },
+        category: {
+            type: String,
+            required: true,
+        },
     },
-    category: {
-        type: String,
-        required: true,
-    },
-});
+    { _id: false }
+);
 
 // language schema for language fields
-const languageSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    variant: { type: String, required: true },
-});
+const languageSchema = new mongoose.Schema(
+    {
+        name: { type: String, required: true },
+        variant: { type: String, required: true },
+    },
+    { _id: false }
+);
 
 // project schema for project fields
-const projectSchema = new mongoose.Schema({
-    projectName: { type: String },
-    link: { type: String },
-    projectDescription: { type: String },
-    projectPhoto: { type: String },
-    portfolioLink: { type: String },
-});
+const projectSchema = new mongoose.Schema(
+    {
+        projectName: { type: String },
+        link: { type: String },
+        projectDescription: { type: String },
+        projectPhoto: { type: String },
+        portfolioLink: { type: String },
+    },
+    { _id: false }
+);
 
 const profileSchema = new mongoose.Schema(
     {
