@@ -82,10 +82,10 @@ const languageSchema = new mongoose.Schema({
 
 // project schema for project fields
 const projectSchema = new mongoose.Schema({
-    projectName: { type: String, required: true },
-    link: { type: String, required: true },
+    projectName: { type: String },
+    link: { type: String },
     projectDescription: { type: String },
-    files: { type: [String] },
+    projectPhoto: { type: String },
     portfolioLink: { type: String },
 });
 

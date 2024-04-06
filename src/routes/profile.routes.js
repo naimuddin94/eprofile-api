@@ -4,9 +4,9 @@ const multer = require('multer');
 const {
   getAllDataFn,
   deleteFn,
-  createFn,
 } = require('../controller/shared.controller');
 const Profile = require('../models/profile.model');
+const { createProfile } = require('../controller/profile.controller');
 const {
   getDataByOwnerIdFn,
   updateByOwnerIdFn,
@@ -23,8 +23,9 @@ profileRouter
     upload.fields([
       { name: 'photo', maxCount: 1 },
       { name: 'coverPhoto', maxCount: 1 },
+      { name: 'projectPhoto', maxCount: 1 },
     ]),
-    createFn(Profile),
+    createProfile,
   );
 
 profileRouter
