@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable consistent-return */
 const multer = require('multer');
 const path = require('path');
 
