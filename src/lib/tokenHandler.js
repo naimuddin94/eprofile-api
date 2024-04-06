@@ -14,6 +14,7 @@ const createAuthCookie = async (req, res, next, userResponse) => {
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
+            partitioned: true,
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
         }).json(new ApiResponse(200, userResponse, 'Login success'));
     } catch (err) {
