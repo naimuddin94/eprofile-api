@@ -4,7 +4,19 @@ const { fileUploadOnCloudinary } = require('../utils/uploadFileCloudinary');
 
 // create a new profile
 const createProfile = asyncHandler(async (req, res) => {
-    const { project, ...remainData } = req.body;
+    console.log(7, req.body);
+    const { project, createdBy, ...remainData } = req.body;
+
+    if (!createdBy) {
+        throw new ApiError(400, 'User id required');
+    }
+
+    const exitsProfile = await Profile.findOne({ createdBy });
+
+    if (exitsProfile) {
+        throw new ApiError(400, 'Profile all ready exits');
+    }
+
     let photoUrl;
     let coverUrl;
     let projectPhotoUrl;
@@ -23,6 +35,7 @@ const createProfile = asyncHandler(async (req, res) => {
     const result = await Profile.create({
         photo: photoUrl,
         coverPhoto: coverUrl || '',
+        createdBy,
         project: { projectPhoto: projectPhotoUrl || '', ...project } || {},
         ...remainData,
     });

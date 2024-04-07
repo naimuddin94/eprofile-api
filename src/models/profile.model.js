@@ -11,11 +11,11 @@ const occupationSchema = new mongoose.Schema(
         },
         designation: {
             type: String,
-            required: true,
+            required: false,
         },
         startDate: {
             type: Date,
-            required: true,
+            required: false,
         },
         endDate: {
             type: Date,
@@ -32,18 +32,18 @@ const educationSchema = new mongoose.Schema(
     {
         instituteName: {
             type: String,
-            required: true,
+            required: false,
         },
         passingYear: {
             type: String,
-            required: true,
+            required: false,
         },
         cgpa: {
             type: String,
         },
         duration: {
             type: String,
-            required: true,
+            required: false,
         },
     },
     { _id: false }
@@ -54,15 +54,13 @@ const experienceSchema = new mongoose.Schema(
     {
         company: {
             type: String,
-            required: true,
         },
         jobTitle: {
             type: String,
-            required: true,
         },
         dateOfEmployment: {
             type: String,
-            required: true,
+            required: false,
         },
         responsibilities: {
             type: String,
@@ -76,11 +74,11 @@ const skillsSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: true,
+            required: false,
         },
         category: {
             type: String,
-            required: true,
+            required: false,
         },
     },
     { _id: false }
@@ -89,8 +87,8 @@ const skillsSchema = new mongoose.Schema(
 // language schema for language fields
 const languageSchema = new mongoose.Schema(
     {
-        name: { type: String, required: true },
-        variant: { type: String, required: true },
+        name: { type: String, required: false },
+        variant: { type: String, required: false },
     },
     { _id: false }
 );
@@ -111,11 +109,10 @@ const profileSchema = new mongoose.Schema(
     {
         fullName: {
             type: String,
-            required: true,
+            required: false,
         },
         photo: {
             type: String,
-            required: true,
         },
         coverPhoto: {
             type: String,
@@ -128,25 +125,22 @@ const profileSchema = new mongoose.Schema(
         },
         contactInformation: {
             type: contactSchema,
-            // required: true,
+            // required: false,
         },
         education: {
             type: [educationSchema],
         },
         experience: {
             type: [experienceSchema],
-            required: true,
         },
         skills: {
             type: [skillsSchema],
-            required: true,
         },
         professionalMemberships: {
             type: String,
         },
         language: {
             type: [languageSchema],
-            required: true,
         },
         volunteerWork: {
             type: String,
@@ -173,7 +167,7 @@ const profileSchema = new mongoose.Schema(
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-            required: true,
+            required: false,
             unique: true,
         },
     },

@@ -11,7 +11,7 @@ const {
   getDataByOwnerIdFn,
   updateByOwnerIdFn,
 } = require('../controller/ownerShared.controller');
-
+// const { upload } = require('../middleware/multer.middleware');
 const upload = multer();
 
 const profileRouter = express.Router();
@@ -23,7 +23,7 @@ profileRouter
     upload.fields([
       { name: 'photo', maxCount: 1 },
       { name: 'coverPhoto', maxCount: 1 },
-      { name: 'projectPhoto', maxCount: 1 },
+      { name: 'project[projectPhoto]', maxCount: 1 },
     ]),
     createProfile,
   );

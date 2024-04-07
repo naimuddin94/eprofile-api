@@ -7,6 +7,7 @@ const storage = multer.diskStorage({
         cb(null, './public');
     },
     filename(req, file, cb) {
+        console.log(10, file);
         const fileExt = path.extname(file.originalname);
         const fileName = `${file.originalname
             .replace(fileExt, '')

@@ -4,35 +4,35 @@ const mongoose = require('mongoose');
 const contactSchema = new mongoose.Schema({
     street: {
         type: String,
-        required: true,
+        required: false,
     },
     house: {
         type: String,
-        required: true,
+        required: false,
     },
     city: {
         type: String,
-        required: true,
+        required: false,
     },
     state: {
         type: String,
-        required: true,
+        required: false,
     },
     postalCode: {
         type: String,
-        required: true,
+        required: false,
     },
     country: {
         type: String,
-        required: true,
+        required: false,
     },
     mobileNumber: {
         type: String,
-        required: true,
+        required: false,
     },
     email: {
         type: String,
-        required: true,
+        required: false,
     },
     website: {
         type: String,
