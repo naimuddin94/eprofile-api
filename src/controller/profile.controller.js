@@ -1,10 +1,13 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable dot-notation */
+/* eslint-disable max-len */
+/* eslint-disable no-undef */
 const Profile = require('../models/profile.model');
 const { asyncHandler, ApiError, ApiResponse } = require('../utils');
 const { fileUploadOnCloudinary } = require('../utils/uploadFileCloudinary');
 
 // create a new profile
 const createProfile = asyncHandler(async (req, res) => {
-    console.log(7, req.body);
     const { project, createdBy, ...remainData } = req.body;
 
     if (!createdBy) {
@@ -14,7 +17,7 @@ const createProfile = asyncHandler(async (req, res) => {
     const exitsProfile = await Profile.findOne({ createdBy });
 
     if (exitsProfile) {
-        throw new ApiError(400, 'Profile all ready exits');
+        throw new ApiError(400, 'User profile all ready exits');
     }
 
     let photoUrl;
@@ -28,8 +31,14 @@ const createProfile = asyncHandler(async (req, res) => {
         coverUrl = await fileUploadOnCloudinary(req?.files?.coverPhoto[0]?.buffer);
     }
 
-    if (req.files && Array.isArray(req.files.projectPhoto) && req.files.projectPhoto.length > 0) {
-        projectPhotoUrl = await fileUploadOnCloudinary(req?.files?.projectPhoto[0]?.buffer);
+    if (
+        req.files
+        && Array.isArray(req.files['project[projectPhoto]'])
+        && req.files['project[projectPhoto]'].length > 0
+    ) {
+        projectPhotoUrl = await fileUploadOnCloudinary(
+            req.files['project[projectPhoto]'][0].buffer,
+        );
     }
 
     const result = await Profile.create({

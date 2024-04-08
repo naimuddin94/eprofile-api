@@ -167,7 +167,7 @@ const profileSchema = new mongoose.Schema(
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-            required: false,
+            required: true,
             unique: true,
         },
     },
@@ -175,7 +175,6 @@ const profileSchema = new mongoose.Schema(
 );
 
 // Define unique indexes
-profileSchema.index({ createdBy: 1 }, { unique: true });
 
 const Profile = mongoose.model('Profile', profileSchema);
 

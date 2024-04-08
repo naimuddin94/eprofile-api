@@ -11,7 +11,7 @@ const {
   getDataByOwnerIdFn,
   updateByOwnerIdFn,
 } = require('../controller/ownerShared.controller');
-// const { upload } = require('../middleware/multer.middleware');
+
 const upload = multer();
 
 const profileRouter = express.Router();
