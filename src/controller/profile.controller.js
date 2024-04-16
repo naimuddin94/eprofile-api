@@ -56,4 +56,72 @@ const createProfile = asyncHandler(async (req, res) => {
     return res.status(201).json(new ApiResponse(200, result, 'Saved successfully'));
 });
 
-module.exports = { createProfile };
+const updateProfile = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  // Exclude password field from req.body
+  if (req?.body?.password) {
+      delete req.body.password;
+  }
+
+    let photoUrl;
+    let coverUrl;
+    let projectPhotoUrl;
+
+    if (
+      req.files
+      && Array.isArray(req.files.photo)
+      && req.files.photo.length > 0
+    ) {
+      photoUrl = await fileUploadOnCloudinary(req?.files?.photo[0]?.buffer);
+    }
+    if (
+      req.files
+      && Array.isArray(req.files.coverPhoto)
+      && req.files.coverPhoto.length > 0
+    ) {
+      coverUrl = await fileUploadOnCloudinary(
+        req?.files?.coverPhoto[0]?.buffer,
+      );
+    }
+
+    if (
+      req.files
+      && Array.isArray(req.files['project[projectPhoto]'])
+      && req.files['project[projectPhoto]'].length > 0
+    ) {
+      projectPhotoUrl = await fileUploadOnCloudinary(
+        req.files['project[projectPhoto]'][0].buffer,
+      );
+    }
+
+    const updateObject = { ...req.body };
+
+    if (photoUrl) {
+        updateObject.photo = photoUrl;
+    }
+
+    if (coverUrl) {
+        updateObject.coverPhoto = coverUrl;
+    }
+
+    if (projectPhotoUrl) {
+        updateObject.project = { projectPhoto: projectPhotoUrl };
+    }
+
+  const result = await Profile.findOneAndUpdate(
+    { createdBy: id },
+    updateObject,
+    {
+      new: true,
+    },
+  );
+
+  if (!result) {
+    throw new ApiError(401, 'Data not found!');
+  }
+
+  return res.status(200).json(new ApiResponse(200, result, 'Updated successfully'));
+});
+
+module.exports = { createProfile, updateProfile };
