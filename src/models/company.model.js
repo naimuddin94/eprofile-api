@@ -28,11 +28,11 @@ const companySchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: true,
+            required: [true, 'Name is required'],
         },
         username: {
             type: String,
-            required: true,
+            required: [true, 'Username is required'],
         },
         photo: {
             type: String,
@@ -51,19 +51,19 @@ const companySchema = new mongoose.Schema(
         },
         founder: {
             type: [founderSchema],
-            required: true,
+            required: [true, 'Founder is required'],
         },
         location: {
             type: String,
-            required: true,
+            required: [true, 'Location is required'],
         },
         services: {
             type: String,
-            required: true,
+            required: [true, 'Services is required'],
         },
         targetMarket: {
             type: String,
-            required: true,
+            required: [true, 'TargetMarket is required'],
         },
         advantage: {
             type: String,
@@ -85,7 +85,7 @@ const companySchema = new mongoose.Schema(
         },
         contact: {
             type: contactSchema,
-            required: true,
+            required: [true, 'Contact information is required'],
         },
         status: {
             type: String,
@@ -95,7 +95,7 @@ const companySchema = new mongoose.Schema(
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-            required: true,
+            required: [true, 'User id required'],
         },
     },
     {

@@ -1,12 +1,14 @@
 /* eslint-disable prettier/prettier */
+// dependencies
 const express = require('express');
 const multer = require('multer');
-const {
-  getAllDataFn,
-  deleteFn,
-  createFn,
-} = require('../controller/shared.controller');
 const Company = require('../models/company.model');
+const { deleteFn } = require('../controller/shared.controller');
+const {
+  createCompany,
+  getSingleCompanyByCreator,
+} = require('../controller/company.controller');
+const { verifyToken } = require('../middleware/token.middleware');
 const {
   getDataByOwnerIdFn,
   updateByOwnerIdFn,
@@ -18,13 +20,14 @@ const companyRouter = express.Router();
 
 companyRouter
   .route('/')
-  .get(getAllDataFn(Company))
+  .get(verifyToken, getSingleCompanyByCreator)
   .post(
+    verifyToken,
     upload.fields([
       { name: 'photo', maxCount: 1 },
       { name: 'coverPhoto', maxCount: 1 },
     ]),
-    createFn(Company),
+    createCompany,
   );
 
 companyRouter

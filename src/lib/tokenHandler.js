@@ -6,6 +6,7 @@ const { ApiResponse } = require('../utils');
 const createAuthCookie = async (req, res, next, userResponse) => {
     try {
         const token = createToken({
+            id: userResponse.id,
             email: userResponse.email,
             role: userResponse.role,
         });
