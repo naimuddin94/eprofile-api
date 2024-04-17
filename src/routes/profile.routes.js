@@ -7,9 +7,8 @@ const {
   createProfile,
   updateProfile,
 } = require('../controller/profile.controller');
-const {
-  getDataByOwnerIdFn,
-} = require('../controller/ownerShared.controller');
+const { verifyToken, verifyAdmin } = require('../middleware');
+const { getDataByOwnerIdFn } = require('../controller/ownerShared.controller');
 
 const upload = multer();
 
@@ -17,7 +16,7 @@ const profileRouter = express.Router();
 
 profileRouter
   .route('/')
-  .get(getAllDataFn(Profile))
+  .get(verifyToken, verifyAdmin, getAllDataFn(Profile))
   .post(
     upload.fields([
       { name: 'photo', maxCount: 1 },
