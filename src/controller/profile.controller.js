@@ -56,6 +56,7 @@ const createProfile = asyncHandler(async (req, res) => {
     return res.status(201).json(new ApiResponse(200, result, 'Saved successfully'));
 });
 
+// update profile
 const updateProfile = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -124,4 +125,7 @@ const updateProfile = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, result, 'Updated successfully'));
 });
 
-module.exports = { createProfile, updateProfile };
+module.exports = {
+  createProfile,
+  updateProfile,
+};
