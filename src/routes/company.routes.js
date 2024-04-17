@@ -7,11 +7,11 @@ const { deleteFn } = require('../controller/shared.controller');
 const {
   createCompany,
   getSingleCompanyByCreator,
+  updateCompany,
 } = require('../controller/company.controller');
 const { verifyToken } = require('../middleware/token.middleware');
 const {
   getDataByOwnerIdFn,
-  updateByOwnerIdFn,
 } = require('../controller/ownerShared.controller');
 
 const upload = multer();
@@ -33,7 +33,7 @@ companyRouter
 companyRouter
   .route('/:id')
   .get(getDataByOwnerIdFn(Company))
-  .put(updateByOwnerIdFn(Company))
+  .put(updateCompany)
   .delete(deleteFn(Company));
 
 module.exports = companyRouter;
