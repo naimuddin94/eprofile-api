@@ -96,4 +96,55 @@ const getSingleCompanyByCreator = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new ApiResponse(200, company, 'Company fetched successfully'));
 });
-module.exports = { createCompany, getSingleCompanyByCreator };
+
+// update company
+const updateCompany = asyncHandler(async (req, res) => {
+  const { companyId } = req.params;
+
+  if (!companyId) {
+    throw new ApiError(400, 'Company id is required');
+  }
+
+  let photoUrl;
+  let coverPhotoUrl;
+
+  if (
+    req.files
+    && Array.isArray(req.files.photo)
+    && req.files.photo.length > 0
+  ) {
+    photoUrl = await fileUploadOnCloudinary(req?.files?.photo[0]?.buffer);
+  }
+
+  if (
+    req.files
+    && Array.isArray(req.files.coverPhoto)
+    && req.files.coverPhoto.length > 0
+  ) {
+    coverPhotoUrl = await fileUploadOnCloudinary(
+      req?.files?.coverPhoto[0]?.buffer,
+    );
+  }
+
+    const updateObject = { ...req.body };
+
+    if (photoUrl) {
+        updateObject.photo = photoUrl;
+    }
+
+    if (coverPhotoUrl) {
+        updateObject.coverPhoto = coverPhotoUrl;
+    }
+
+    const company = await Company.findByIdAndUpdate(companyId, updateObject, { new: true });
+
+  if (!company) {
+    throw new ApiError(500, 'Something went wrong while updating company');
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, company, 'Company updated successfully'));
+});
+
+module.exports = { createCompany, getSingleCompanyByCreator, updateCompany };
