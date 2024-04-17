@@ -17,11 +17,12 @@ userRouter
   .route('/')
   .get(verifyToken, verifyAdmin, getAllDataFn(User))
   .post(registerUser);
+
 userRouter
   .route('/:id')
   .get(getSingleDataFn(User))
   .put(updateFn(User))
-  .delete(deleteFn(User));
+  .delete(verifyToken, verifyAdmin, deleteFn(User));
 userRouter.route('/role/:email').get(getUserRoleFn(User));
 
 module.exports = userRouter;
