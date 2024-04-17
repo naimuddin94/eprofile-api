@@ -6,9 +6,10 @@ const {
 } = require('../controller/admin.controller');
 
 const adminRouter = express.Router();
+const { verifyToken, verifyAdmin } = require('../middleware');
 
-adminRouter.route('/user-profile/:profileId').patch(updateProfileStatus);
-adminRouter.route('/approved-profiles').get(approvedProfiles);
-adminRouter.route('/pending-profiles').get(pendingProfiles);
+adminRouter.route('/update-status/:profileId').put(verifyToken, verifyAdmin, updateProfileStatus);
+adminRouter.route('/approved-profiles').get(verifyToken, verifyAdmin, approvedProfiles);
+adminRouter.route('/pending-profiles').get(verifyToken, verifyAdmin, pendingProfiles);
 
 module.exports = adminRouter;
