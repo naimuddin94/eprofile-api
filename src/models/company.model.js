@@ -6,15 +6,15 @@ const contactSchema = require('./contact.model');
 const founderSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        // required: true,
     },
     designation: {
         type: String,
-        required: true,
+        // required: true,
     },
     startDate: {
         type: Date,
-        required: true,
+        // required: true,
     },
     endDate: {
         type: Date,
@@ -28,11 +28,11 @@ const companySchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: [true, 'Name is required'],
+            // required: [true, 'Name is required'],
         },
         username: {
             type: String,
-            required: [true, 'Username is required'],
+            // required: [true, 'Username is required'],
         },
         photo: {
             type: String,
@@ -51,19 +51,19 @@ const companySchema = new mongoose.Schema(
         },
         founder: {
             type: [founderSchema],
-            required: [true, 'Founder is required'],
+            // required: [true, 'Founder is required'],
         },
         location: {
             type: String,
-            required: [true, 'Location is required'],
+            // required: [true, 'Location is required'],
         },
         services: {
             type: String,
-            required: [true, 'Services is required'],
+            // required: [true, 'Services is required'],
         },
         targetMarket: {
             type: String,
-            required: [true, 'TargetMarket is required'],
+            // required: [true, 'TargetMarket is required'],
         },
         advantage: {
             type: String,
@@ -85,7 +85,7 @@ const companySchema = new mongoose.Schema(
         },
         contact: {
             type: contactSchema,
-            required: [true, 'Contact information is required'],
+            // required: [true, 'Contact information is required'],
         },
         status: {
             type: String,
