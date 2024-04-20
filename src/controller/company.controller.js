@@ -101,17 +101,15 @@ const createCompany = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, company, 'Company created successfully'));
 });
 
-// get company by created user
-const getSingleCompanyByCreator = asyncHandler(async (req, res) => {
-  const userId = req?.user?.id;
+// get single company
+const getSingleCompany = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-  console.log(89, userId);
-
-  if (!userId) {
-    throw new ApiError(400, 'Invalid user access');
+  if (!id) {
+    throw new ApiError(400, 'Company id required');
   }
 
-  const company = await Company.find({ createdBy: userId });
+  const company = await Company.findById(id);
 
   if (!company) {
     throw new ApiError(404, 'Company not found');
@@ -174,4 +172,61 @@ const updateCompany = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, company, 'Company updated successfully'));
 });
 
-module.exports = { createCompany, getSingleCompanyByCreator, updateCompany };
+// get all owner company
+const getOwnerCompanies = asyncHandler(async (req, res) => {
+  const companies = await Company.find({ createdBy: req.user.id });
+
+  if (!companies) {
+    throw new ApiError(500, 'Something went wrong when fetched company');
+  }
+
+  return res.status(200).json(new ApiResponse(200, companies, 'Company fetched successfully'));
+});
+
+// get all published company
+const getAllPublishedCompany = asyncHandler(async (req, res) => {
+  const companies = await Company.find({ status: 'published' });
+
+  if (!companies) {
+    throw new ApiError(500, 'Something went wrong when fetching companies');
+  }
+
+  return res.status(200).json(new ApiResponse(200, companies, 'Fetched companies successfully'));
+});
+
+// delete company
+const deleteCompany = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    throw new ApiError(400, 'Company id required');
+  }
+
+  const company = await Company.findById(id);
+
+  const isOwner = company.createdBy === req?.user?.id;
+
+  if (!isOwner && req?.user?.role !== 'Admin') {
+    throw new ApiError(400, 'Your are not allowed to delete this company');
+  }
+
+  const result = await Company.findByIdAndDelete(id);
+
+  if (!result) {
+    throw new ApiError(
+      404,
+      'Something went wrong retrieving data from the database',
+    );
+  }
+
+  return res.json(new ApiResponse(200, {}, 'Deleted company successfully'));
+});
+
+module.exports = {
+  createCompany,
+  getSingleCompany,
+  updateCompany,
+  getOwnerCompanies,
+  getAllPublishedCompany,
+  deleteCompany,
+};
