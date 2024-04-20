@@ -1,13 +1,14 @@
 /* eslint-disable prettier/prettier */
 const express = require('express');
 const multer = require('multer');
-const { getAllDataFn, deleteFn } = require('../controller/shared.controller');
 const Profile = require('../models/profile.model');
 const {
   createProfile,
   updateProfile,
+  getAllApprovedProfiles,
+  deleteProfile,
 } = require('../controller/profile.controller');
-const { verifyToken, verifyAdmin } = require('../middleware');
+const { verifyToken } = require('../middleware');
 const { getDataByOwnerIdFn } = require('../controller/ownerShared.controller');
 
 const upload = multer();
@@ -16,8 +17,9 @@ const profileRouter = express.Router();
 
 profileRouter
   .route('/')
-  .get(verifyToken, verifyAdmin, getAllDataFn(Profile))
+  .get(verifyToken, getAllApprovedProfiles)
   .post(
+    verifyToken,
     upload.fields([
       { name: 'photo', maxCount: 1 },
       { name: 'coverPhoto', maxCount: 1 },
@@ -37,6 +39,6 @@ profileRouter
     ]),
     updateProfile,
   )
-  .delete(deleteFn(Profile));
+  .delete(verifyToken, deleteProfile);
 
 module.exports = profileRouter;
