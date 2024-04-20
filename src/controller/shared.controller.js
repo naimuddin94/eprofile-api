@@ -94,7 +94,7 @@ const deleteFn = (dbCollectionName) => asyncHandler(async (req, res) => {
         throw new ApiError(404, 'Something went wrong retrieving data from the database');
     }
 
-    return res.json(new ApiResponse(200, 'Deleted successfully'));
+    return res.json(new ApiResponse(200, {}, 'Deleted successfully'));
 });
 
 // get user role
