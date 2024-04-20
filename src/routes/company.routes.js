@@ -2,17 +2,15 @@
 // dependencies
 const express = require('express');
 const multer = require('multer');
-const Company = require('../models/company.model');
-const { deleteFn } = require('../controller/shared.controller');
 const {
   createCompany,
-  getSingleCompanyByCreator,
+  getSingleCompany,
   updateCompany,
+  getOwnerCompanies,
+  getAllPublishedCompany,
+  deleteCompany,
 } = require('../controller/company.controller');
 const { verifyToken } = require('../middleware/token.middleware');
-const {
-  getDataByOwnerIdFn,
-} = require('../controller/ownerShared.controller');
 
 const upload = multer();
 
@@ -20,7 +18,7 @@ const companyRouter = express.Router();
 
 companyRouter
   .route('/')
-  .get(verifyToken, getSingleCompanyByCreator)
+  .get(verifyToken, getAllPublishedCompany)
   .post(
     verifyToken,
     upload.fields([
@@ -32,8 +30,10 @@ companyRouter
 
 companyRouter
   .route('/:id')
-  .get(getDataByOwnerIdFn(Company))
-  .put(updateCompany)
-  .delete(deleteFn(Company));
+  .get(verifyToken, getSingleCompany)
+  .put(verifyToken, updateCompany)
+  .delete(verifyToken, deleteCompany);
+
+companyRouter.route('/my-companies').get(verifyToken, getOwnerCompanies);
 
 module.exports = companyRouter;
