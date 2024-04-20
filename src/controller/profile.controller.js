@@ -8,13 +8,9 @@ const { fileUploadOnCloudinary } = require('../utils/uploadFileCloudinary');
 
 // create a new profile
 const createProfile = asyncHandler(async (req, res) => {
-    const { project, createdBy, ...remainData } = req.body;
+    const { project, ...remainData } = req.body;
 
-    if (!createdBy) {
-        throw new ApiError(400, 'User id required');
-    }
-
-    const exitsProfile = await Profile.findOne({ createdBy });
+    const exitsProfile = await Profile.findOne({ createdBy: req?.user?.id });
 
     if (exitsProfile) {
         throw new ApiError(400, 'User profile all ready exits');
@@ -44,7 +40,7 @@ const createProfile = asyncHandler(async (req, res) => {
     const result = await Profile.create({
         photo: photoUrl,
         coverPhoto: coverUrl || '',
-        createdBy,
+        createdBy: req?.user?.id,
         project: { projectPhoto: projectPhotoUrl || '', ...project } || {},
         ...remainData,
     });
@@ -125,7 +121,48 @@ const updateProfile = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, result, 'Updated successfully'));
 });
 
+// get all approved profiles
+const getAllApprovedProfiles = asyncHandler(async (req, res) => {
+  const profiles = await Profile.find({ approved: true });
+
+  if (!profiles) {
+    throw new ApiError(500, 'Something went wrong while fetching all profiles');
+  }
+
+  return res.status(200).json(new ApiResponse(200, profiles, 'Profiles fetched successfully'));
+});
+
+// delete company
+const deleteProfile = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    throw new ApiError(400, 'Profile id required');
+  }
+
+  const profile = await Profile.findById(id);
+
+  const isOwner = profile.createdBy === req?.user?.id;
+
+  if (!isOwner && req?.user?.role !== 'Admin') {
+    throw new ApiError(400, 'Your are not allowed to delete this profile');
+  }
+
+  const result = await Profile.findByIdAndDelete(id);
+
+  if (!result) {
+    throw new ApiError(
+      404,
+      'Something went wrong retrieving data from the database',
+    );
+  }
+
+  return res.json(new ApiResponse(200, {}, 'Deleted profile successfully'));
+});
+
 module.exports = {
   createProfile,
   updateProfile,
+  getAllApprovedProfiles,
+  deleteProfile,
 };
