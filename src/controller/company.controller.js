@@ -180,7 +180,9 @@ const getOwnerCompanies = asyncHandler(async (req, res) => {
     throw new ApiError(500, 'Something went wrong when fetched company');
   }
 
-  return res.status(200).json(new ApiResponse(200, companies, 'Company fetched successfully'));
+  return res
+    .status(200)
+    .json(new ApiResponse(200, companies, 'Company fetched successfully'));
 });
 
 // get all published company

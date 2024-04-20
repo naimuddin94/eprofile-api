@@ -34,6 +34,6 @@ companyRouter
   .put(verifyToken, updateCompany)
   .delete(verifyToken, deleteCompany);
 
-companyRouter.route('/my-companies').get(verifyToken, getOwnerCompanies);
+companyRouter.route('/my/company').get(verifyToken, getOwnerCompanies);
 
 module.exports = companyRouter;
