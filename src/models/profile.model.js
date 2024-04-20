@@ -35,7 +35,7 @@ const educationSchema = new mongoose.Schema(
             required: false,
         },
         passingYear: {
-            type: String,
+            type: Date,
             required: false,
         },
         cgpa: {
@@ -59,7 +59,7 @@ const experienceSchema = new mongoose.Schema(
             type: String,
         },
         dateOfEmployment: {
-            type: String,
+            type: Date,
             required: false,
         },
         responsibilities: {
@@ -168,7 +168,7 @@ const profileSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
-            unique: true,
+            unique: [true, 'Profile already exists'],
         },
     },
     { timestamps: true }
