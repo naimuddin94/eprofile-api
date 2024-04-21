@@ -18,7 +18,7 @@ const companyRouter = express.Router();
 
 companyRouter
   .route('/')
-  .get(verifyToken, getAllPublishedCompany)
+  .get(getAllPublishedCompany)
   .post(
     verifyToken,
     upload.fields([
@@ -30,7 +30,7 @@ companyRouter
 
 companyRouter
   .route('/:id')
-  .get(verifyToken, getSingleCompany)
+  .get(getSingleCompany)
   .put(verifyToken, updateCompany)
   .delete(verifyToken, deleteCompany);
 
