@@ -132,6 +132,22 @@ const getAllApprovedProfiles = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, profiles, 'Profiles fetched successfully'));
 });
 
+// get single profile by id
+const getSingleProfile = asyncHandler(async (req, res) => {
+        const { profileId } = req.params;
+
+        if (!profileId) {
+            throw new ApiError(400, 'Profile id is required');
+        }
+
+        const result = await Profile.findById(profileId);
+
+        if (!result) {
+            throw new ApiError(404, 'Profile not found');
+        }
+        return res.json(new ApiResponse(200, result, 'Profile fetched successfully'));
+});
+
 // delete company
 const deleteProfile = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -165,4 +181,5 @@ module.exports = {
   updateProfile,
   getAllApprovedProfiles,
   deleteProfile,
+  getSingleProfile,
 };
