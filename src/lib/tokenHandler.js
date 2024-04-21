@@ -16,7 +16,7 @@ const createAuthCookie = async (req, res, next, userResponse) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-        }).json(new ApiResponse(200, userResponse, 'Login success'));
+        }).json(new ApiResponse(200, { user: userResponse, token }, 'Login success'));
     } catch (err) {
         next(err);
     }
