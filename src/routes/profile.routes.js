@@ -7,6 +7,7 @@ const {
   updateProfile,
   getAllApprovedProfiles,
   deleteProfile,
+  getSingleProfile,
 } = require('../controller/profile.controller');
 const { verifyToken } = require('../middleware');
 const { getDataByOwnerIdFn } = require('../controller/ownerShared.controller');
@@ -17,7 +18,7 @@ const profileRouter = express.Router();
 
 profileRouter
   .route('/')
-  .get(verifyToken, getAllApprovedProfiles)
+  .get(getAllApprovedProfiles)
   .post(
     verifyToken,
     upload.fields([
@@ -40,5 +41,7 @@ profileRouter
     updateProfile,
   )
   .delete(verifyToken, deleteProfile);
+
+profileRouter.route('/single/:profileId').get(getSingleProfile);
 
 module.exports = profileRouter;
