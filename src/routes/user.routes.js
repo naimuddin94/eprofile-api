@@ -15,7 +15,7 @@ const userRouter = express.Router();
 
 userRouter
   .route('/')
-  .get(verifyToken, verifyAdmin, getAllDataFn(User))
+  .get(getAllDataFn(User))
   .post(registerUser);
 
 userRouter
