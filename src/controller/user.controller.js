@@ -69,4 +69,50 @@ const registerUserByAdmin = asyncHandler(async (req, res) => {
     res.status(201).json(new ApiResponse(201, createdUser, 'Account created successfully'));
 });
 
-module.exports = { registerUser, registerUserByAdmin };
+// fetched single user by id
+const getSingleUser = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+        throw new ApiError(400, 'Id is required');
+    }
+
+    const user = await User.findById(id).select('-password');
+
+    if (!user) {
+        throw new ApiError(404, 'User not found');
+    }
+    return res.json(new ApiResponse(200, user, 'User fetched successfully'));
+});
+
+// update the user
+const updateUser = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const isAdmin = req?.user?.role === 'Admin';
+
+    if (!isAdmin && req.body?.role) {
+        delete req.body?.role;
+    }
+
+    // Exclude password field from req.body
+    if (req?.body?.password) {
+        delete req.body.password;
+    }
+
+    if (!id) {
+        throw new ApiError(400, 'Id required');
+    }
+
+    const result = await User.findByIdAndUpdate(id, req.body, {
+        new: true,
+    });
+
+    if (!result) {
+        throw new ApiError(404, 'Something went wrong while updating the user');
+    }
+
+    return res.json(new ApiResponse(200, result, 'User updated successfully'));
+});
+
+module.exports = { registerUser, registerUserByAdmin, updateUser, getSingleUser };
