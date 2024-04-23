@@ -7,7 +7,10 @@ const {
   deleteFn,
   getUserRoleFn,
 } = require('../controller/shared.controller');
-const { registerUser } = require('../controller/user.controller');
+const {
+  registerUser,
+  registerUserByAdmin,
+} = require('../controller/user.controller');
 const User = require('../models/user.model');
 const { verifyToken, verifyAdmin } = require('../middleware');
 
@@ -24,5 +27,7 @@ userRouter
   .put(updateFn(User))
   .delete(verifyToken, verifyAdmin, deleteFn(User));
 userRouter.route('/role/:email').get(getUserRoleFn(User));
+
+userRouter.route('/admin').post(verifyToken, verifyAdmin, registerUserByAdmin);
 
 module.exports = userRouter;
