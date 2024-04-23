@@ -28,6 +28,6 @@ userRouter
   .delete(verifyToken, verifyAdmin, deleteFn(User));
 userRouter.route('/role/:email').get(getUserRoleFn(User));
 
-userRouter.route('/admin').post(verifyToken, verifyAdmin, registerUserByAdmin);
+userRouter.route('/admin/create').post(verifyToken, verifyAdmin, registerUserByAdmin);
 
 module.exports = userRouter;
