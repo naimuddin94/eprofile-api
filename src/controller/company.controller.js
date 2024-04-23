@@ -122,9 +122,9 @@ const getSingleCompany = asyncHandler(async (req, res) => {
 
 // update company
 const updateCompany = asyncHandler(async (req, res) => {
-  const { companyId } = req.params;
+  const { id } = req.params;
 
-  if (!companyId) {
+  if (!id) {
     throw new ApiError(400, 'Company id is required');
   }
 
@@ -159,7 +159,7 @@ const updateCompany = asyncHandler(async (req, res) => {
     updateObject.coverPhoto = coverPhotoUrl;
   }
 
-  const company = await Company.findByIdAndUpdate(companyId, updateObject, {
+  const company = await Company.findByIdAndUpdate(id, updateObject, {
     new: true,
   });
 
