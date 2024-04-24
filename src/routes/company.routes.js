@@ -31,7 +31,14 @@ companyRouter
 companyRouter
   .route('/:id')
   .get(getSingleCompany)
-  .put(verifyToken, updateCompany)
+  .put(
+    verifyToken,
+    upload.fields([
+      { name: 'photo', maxCount: 1 },
+      { name: 'coverPhoto', maxCount: 1 },
+    ]),
+    updateCompany,
+  )
   .delete(verifyToken, deleteCompany);
 
 companyRouter.route('/my/company').get(verifyToken, getOwnerCompanies);
